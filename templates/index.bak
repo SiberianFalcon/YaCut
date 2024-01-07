@@ -57,9 +57,17 @@
                 <div>
                     {{ form.custom_id(class="form-control form-control-lg py-2 mb-3",
                             placeholder="Ваш вариант короткой ссылки") }}
-                  <p><span style="color:red">Текст не возможной ошибки</span></p>
+                  <p><span style="color:red">
+                      {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                              {% for message in messages %}
+                                  {{ message }}
+                              {% endfor %}
+                          {% endif %}
+                      {% endwith %}
+                  </span>
+                  </p>
                 </div>
-
                   {{ form.submit(class="btn btn-primary", value="Создать")}}
               </div>
             </form>

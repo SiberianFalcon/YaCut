@@ -1,7 +1,7 @@
 import random
 import string
 
-from flask import render_template, redirect
+from flask import render_template, redirect, flash
 
 from . import app, db
 from .models import URLMap
@@ -18,19 +18,19 @@ def get_unique_short_id():
                     string.ascii_letters + string.digits) for _ in range(16)
             )
             short_link = link_array
-
             new_url = URLMap(
                 original=form.original_link.data,
                 short=short_link
             )
             db.session.add(new_url)
             db.session.commit()
-
-            new_link = URLMap.query.filter_by(short=short_link).first()
             context = {'form': form, 'short_link': short_link}
-            return render_template('index.html', **context)
+            return render_template('content.html', **context)
         else:
             short_link = form.custom_id.data
+            if URLMap.query.filter_by(short=short_link).first():
+                flash('Придумайте другое название')
+                return render_template('content.html', form=form)
             new_url = URLMap(
                 original=form.original_link.data,
                 short=short_link
@@ -38,13 +38,13 @@ def get_unique_short_id():
             db.session.add(new_url)
             db.session.commit()
             context = {'form': form, 'short_link': short_link}
-            return render_template('index.html', **context)
+            return render_template('content.html', **context)
 
-    return render_template('index.html', form=form)
+    return render_template('content.html', form=form)
 
 
 @app.route('/<path:short_id>')
 def redirect_func(short_id):
-    redir_link = URLMap.query.filter_by(short=short_id).first()
-    return redirect(redir_link.original)
+    redirect_link = URLMap.query.filter_by(short=short_id).first()
+    return redirect(redirect_link.original)
 
