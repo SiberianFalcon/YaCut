@@ -58,4 +58,3 @@ def redirect_func(short_id):
     if redirect_link is None:
         raise InvalidAPIUsage('Данный url не найден', STATUS_CODE_NOT_FOUND)
     return redirect(redirect_link.original)
-

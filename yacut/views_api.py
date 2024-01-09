@@ -2,9 +2,8 @@ from flask import jsonify, request
 
 from . import app, db
 from .constants import (
-    MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS, STATUS_CODE_OK,
-    STATUS_CODE_CREATED,
-    STATUS_CODE_NOT_FOUND
+    MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS,
+    STATUS_CODE_OK, STATUS_CODE_CREATED, STATUS_CODE_NOT_FOUND
 )
 from .error_handler import InvalidAPIUsage
 from .models import URLMap

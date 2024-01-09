@@ -6,9 +6,7 @@ MAX_MODEL_SORT_LENGTH = 64
 MAX_FORM_LENGTH = 128
 MIN_FORM_LENGTH = 1
 
-FORBIDDEN_EXPRESSIONS = [
-      '.,/!?', 'Hodor-Hodor', 'h@k$r', '$', 'п', 'l l'
-]
+FORBIDDEN_EXPRESSIONS = ['.,/!?', 'Hodor-Hodor', 'h@k$r', '$', 'п', 'l l']
 
 #STATUS_CODE
 STATUS_CODE_OK = 200
