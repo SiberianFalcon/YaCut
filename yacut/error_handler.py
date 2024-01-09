@@ -1,10 +1,11 @@
 from flask import jsonify
 
-from . import app, db
+from . import app
+from .constants import STATUS_CODE_BAD_REQUEST
 
 
 class InvalidAPIUsage(Exception):
-    status_code = 400
+    status_code = STATUS_CODE_BAD_REQUEST
 
     def __init__(self, message, status_code=None):
         super().__init__()
