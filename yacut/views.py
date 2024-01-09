@@ -4,16 +4,17 @@ import string
 from flask import render_template, redirect, flash
 
 from . import app, db
-from .models import URLMap
-from .forms import URLForm
 from .error_handler import InvalidAPIUsage
+from .forms import URLForm
+from .models import URLMap
+from .constants import (LENGTH_LINK, STATUS_CODE_NOT_FOUND)
 
 
 def create_random_short_url():
     link_array = ''.join(
         random.choice(
             string.ascii_letters + string.digits
-        ) for _ in range(6)
+        ) for _ in range(LENGTH_LINK)
     )
     return link_array
 
@@ -55,6 +56,6 @@ def get_unique_short_id():
 def redirect_func(short_id):
     redirect_link = URLMap.query.filter_by(short=short_id).first()
     if redirect_link is None:
-        raise InvalidAPIUsage('Данный url не найден', 404)
+        raise InvalidAPIUsage('Данный url не найден', STATUS_CODE_NOT_FOUND)
     return redirect(redirect_link.original)
 
