@@ -1,4 +1,4 @@
-from flask import jsonify, render_template
+from flask import jsonify
 
 from . import app, db
 
@@ -19,14 +19,3 @@ class InvalidAPIUsage(Exception):
 @app.errorhandler(InvalidAPIUsage)
 def invalid_api_usage(error):
     return jsonify(error.to_dict()), error.status_code
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return 404
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return 500

@@ -13,8 +13,4 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
 from . import views, views_api, models, forms
-
-
-# from yacut.__init__ import db
