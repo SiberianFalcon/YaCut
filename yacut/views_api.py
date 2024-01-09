@@ -2,12 +2,14 @@ from flask import jsonify, request
 
 from . import app, db
 from .constants import (
-    MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS, STATUS_CODE_CREATED,
+    MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS, STATUS_CODE_OK,
+    STATUS_CODE_CREATED,
     STATUS_CODE_NOT_FOUND
 )
 from .error_handler import InvalidAPIUsage
 from .models import URLMap
 from .views import create_random_short_url
+
 
 @app.route('/api/id/', methods=['POST'])
 def create_id():
@@ -63,4 +65,4 @@ def get_url(short_id):
             {'message': 'Указанный id не найден'}
         ), STATUS_CODE_NOT_FOUND
 
-    return jsonify({'url': short_link.original}), STATUS_CODE_CREATED
+    return jsonify({'url': short_link.original}), STATUS_CODE_OK
