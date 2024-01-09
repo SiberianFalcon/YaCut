@@ -19,19 +19,20 @@
                 <div>
                     {{ form.original_link(class="form-control form-control-lg py-2 mb-3",
                             placeholder="Длинная ссылка") }}
-                  <p><span style="color:red">Текст не возможной ошибки</span></p>
+                  <p><span style="color:red">Текст не возможной ошибки</span>
+                  </p>
                 </div>
                 <div>
                     {{ form.custom_id(class="form-control form-control-lg py-2 mb-3",
                             placeholder="Ваш вариант короткой ссылки") }}
                   <p><span style="color:red">
-                      {% with messages = get_flashed_messages() %}
-                          {% if messages %}
-                              {% for message in messages %}
-                                  {{ message }}
-                              {% endfor %}
-                          {% endif %}
-                      {% endwith %}
+{#                      {% with messages = get_flashed_messages() %}#}
+{#                          {% if messages %}#}
+{#                              {% for message in messages %}#}
+{#                                  {{ message }}#}
+{#                              {% endfor %}#}
+{#                          {% endif %}#}
+{#                      {% endwith %}#}
                   </span>
                   </p>
                 </div>
@@ -50,8 +51,15 @@
           </div>
           <div class="col-sm">
             <p class="text-center">
-            <h5 class="text-center">Пример информационного сообщения
-              <a href="{{ url_for('redirect_func', short_id=short_link) }}">{{ url_for('redirect_func', short_id=short_link, _external=True) }}</a></h5>
+            <h5 class="text-center">
+              {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                      {% for message in messages %}
+                          <a href="http://localhost/{{ message }}">http://localhost/{{ message }}</a>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+          </h5>
             </p>
           </div>
           <div class="col-sm">
