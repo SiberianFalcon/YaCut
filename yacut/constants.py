@@ -1,3 +1,7 @@
+from random import choice
+from string import ascii_letters, digits
+
+
 #LENGTH
 LENGTH_LINK = 6
 MAX_CUSTOM_LINK_LENGTH = 15
@@ -7,7 +11,10 @@ MAX_FORM_LENGTH_URL = 128
 MAX_FORM_LENGTH_ID = 17
 MIN_FORM_LENGTH = 1
 
+#OTHER
 FORBIDDEN_EXPRESSIONS = ['.,/!?', 'Hodor-Hodor', 'h@k$r', '$', 'п', 'l l']
+CREATE_RANDOM_LINK = ''.join(
+    choice(ascii_letters + digits) for _ in range(LENGTH_LINK))
 
 #STATUS_CODE
 STATUS_CODE_OK = 200
