@@ -1,6 +1,6 @@
 from flask import jsonify, request, url_for
 
-from . import app, db
+from . import app
 from .constants import (
     MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS,
     STATUS_CODE_OK, STATUS_CODE_CREATED, STATUS_CODE_NOT_FOUND
