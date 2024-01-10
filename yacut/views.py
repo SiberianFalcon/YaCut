@@ -7,13 +7,12 @@ from .models import URLMap
 from .constants import (CREATE_RANDOM_LINK, STATUS_CODE_NOT_FOUND)
 
 
-def add_to_database(new_short_url):
-    form = URLForm()
-    new_url = URLMap(
-        original=form.original_link.data,
-        short=new_short_url
+def add_to_database(url, short_link):
+    model = URLMap(
+        original=url,
+        short=short_link
     )
-    db.session.add(new_url)
+    db.session.add(model)
     db.session.commit()
 
 
@@ -30,7 +29,7 @@ def get_unique_short_id():
     if form.validate_on_submit():
         if not form.custom_id.data:
             new_short_url = create_random_short_url()
-            add_to_database(new_short_url)
+            add_to_database(form.original_link.data, new_short_url)
             flash(new_short_url)
             context = {'form': form, 'short_link': new_short_url}
             return render_template('content.html', **context)
@@ -39,7 +38,7 @@ def get_unique_short_id():
         if URLMap.query.filter_by(short=new_short_url).first():
             flash('Предложенный вариант короткой ссылки уже существует.')
             return render_template('content.html', form=form)
-        add_to_database(new_short_url)
+        add_to_database(form.original_link.data, new_short_url)
         flash(new_short_url)
         context = {'form': form, 'short_link': new_short_url}
         return render_template('content.html', **context)

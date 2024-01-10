@@ -1,5 +1,3 @@
-from string import ascii_letters, digits
-
 from flask import jsonify, request, url_for
 
 from . import app, db
@@ -9,7 +7,7 @@ from .constants import (
 )
 from .error_handler import InvalidAPIUsage
 from .models import URLMap
-from .views import create_random_short_url
+from .views import add_to_database, create_random_short_url
 
 
 @app.route('/api/id/', methods=['POST'])
@@ -24,12 +22,7 @@ def create_id():
 
     if 'custom_id' not in data or not data['custom_id']:
         new_short_url = create_random_short_url()
-        new_link = URLMap(
-            original=data['url'],
-            short=new_short_url
-        )
-        db.session.add(new_link)
-        db.session.commit()
+        add_to_database(data['url'], new_short_url)
         return (jsonify({
             'url': data['url'],
             'short_link': url_for(
@@ -42,17 +35,12 @@ def create_id():
         raise InvalidAPIUsage(
             'Предложенный вариант короткой ссылки уже существует.')
 
-    if (data['custom_id'] not in [ascii_letters, digits]
+    if (not data['custom_id'].isalnum()
             or data['custom_id'] in FORBIDDEN_EXPRESSIONS
             or len(data['custom_id']) > MAX_CUSTOM_LINK_LENGTH):
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
-    new_link = URLMap(
-        original=data['url'],
-        short=data['custom_id']
-    )
-    db.session.add(new_link)
-    db.session.commit()
+    add_to_database(data['url'], data['custom_id'])
     return (jsonify(
         {
             'url': data['url'],
