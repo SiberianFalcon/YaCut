@@ -1,3 +1,5 @@
+from string import ascii_letters, digits
+
 from flask import jsonify, request, url_for
 
 from . import app, db
@@ -40,7 +42,8 @@ def create_id():
         raise InvalidAPIUsage(
             'Предложенный вариант короткой ссылки уже существует.')
 
-    if (data['custom_id'] in FORBIDDEN_EXPRESSIONS
+    if (data['custom_id'] not in [ascii_letters, digits]
+            or data['custom_id'] in FORBIDDEN_EXPRESSIONS
             or len(data['custom_id']) > MAX_CUSTOM_LINK_LENGTH):
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
