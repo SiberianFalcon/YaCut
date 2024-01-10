@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from . import app
+from . import app, db
 from .constants import STATUS_CODE_BAD_REQUEST
 
 
@@ -20,3 +20,14 @@ class InvalidAPIUsage(Exception):
 @app.errorhandler(InvalidAPIUsage)
 def invalid_api_usage(error):
     return jsonify(error.to_dict()), error.status_code
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    db.session.rollback()
+    return 500
