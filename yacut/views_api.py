@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, url_for
 
 from . import app, db
 from .constants import (
@@ -14,13 +14,13 @@ from .views import create_random_short_url
 def create_id():
     data = request.get_json()
 
-    if data in [None, {}]:
+    if not data:
         raise InvalidAPIUsage('Отсутствует тело запроса')
 
     if 'url' not in data or data['url'] == '':
         raise InvalidAPIUsage('"url" является обязательным полем!')
 
-    if 'custom_id' not in data or data['custom_id'] in [None, '']:
+    if 'custom_id' not in data or not data['custom_id']:
         new_short_url = create_random_short_url()
         new_link = URLMap(
             original=data['url'],
@@ -30,9 +30,11 @@ def create_id():
         db.session.commit()
         return (jsonify({
             'url': data['url'],
-            'short_link': f'http://localhost/{new_short_url}'}),
-            STATUS_CODE_CREATED
-        )
+            'short_link': url_for(
+                endpoint='get_unique_short_id',
+                _external=True,
+                _scheme='http') + new_short_url}),
+                STATUS_CODE_CREATED)
 
     if URLMap.query.filter_by(short=data['custom_id']).first():
         raise InvalidAPIUsage(
