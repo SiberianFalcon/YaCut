@@ -1,6 +1,6 @@
 from random import choice
 
-from flask import render_template, redirect, flash
+from flask import render_template, redirect, flash, url_for
 
 from . import app, db
 from .constants import (
@@ -8,15 +8,6 @@ from .constants import (
 from .error_handler import InvalidAPIUsage
 from .forms import URLForm
 from .models import URLMap
-
-
-def add_to_database(url, short_link):
-    model = URLMap(
-        original=url,
-        short=short_link
-    )
-    db.session.add(model)
-    db.session.commit()
 
 
 def create_random_short_url():
@@ -28,26 +19,40 @@ def create_random_short_url():
             return random_link
 
 
+def add_to_database(url, short_link=None):
+    if short_link is None:
+        short_link = create_random_short_url()
+    model = URLMap(
+        original=url,
+        short=short_link
+    )
+    db.session.add(model)
+    db.session.commit()
+
+    flash(
+        url_for(
+            'get_unique_short_id',
+            _scheme='http',
+            _external=True
+        )
+        + short_link
+    )
+
+
 @app.route('/', methods=['GET', 'POST'])
 def get_unique_short_id():
     form = URLForm()
     if form.validate_on_submit():
         if not form.custom_id.data:
-            new_short_url = create_random_short_url()
-            add_to_database(form.original_link.data, new_short_url)
-            flash(new_short_url)
-            context = {'form': form, 'short_link': new_short_url}
-            return render_template('content.html', **context)
+            add_to_database(form.original_link.data)
+            return render_template('content.html', form=form)
 
         new_short_url = form.custom_id.data
         if URLMap.query.filter_by(short=new_short_url).first():
             flash('Предложенный вариант короткой ссылки уже существует.')
             return render_template('content.html', form=form)
         add_to_database(form.original_link.data, new_short_url)
-        flash(new_short_url)
-        context = {'form': form, 'short_link': new_short_url}
-        return render_template('content.html', **context)
-
+        return render_template('content.html', form=form)
     return render_template('content.html', form=form)
 
 
