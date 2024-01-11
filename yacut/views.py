@@ -1,10 +1,13 @@
+from random import choice
+
 from flask import render_template, redirect, flash
 
 from . import app, db
+from .constants import (
+    CREATE_RANDOM_LINK, STATUS_CODE_NOT_FOUND, LENGTH_LINK)
 from .error_handler import InvalidAPIUsage
 from .forms import URLForm
 from .models import URLMap
-from .constants import (CREATE_RANDOM_LINK, STATUS_CODE_NOT_FOUND)
 
 
 def add_to_database(url, short_link):
@@ -18,7 +21,9 @@ def add_to_database(url, short_link):
 
 def create_random_short_url():
     while True:
-        random_link = CREATE_RANDOM_LINK
+        random_link = ''.join(
+            choice(CREATE_RANDOM_LINK) for _ in range(LENGTH_LINK))
+
         if not URLMap.query.filter_by(short=random_link).first():
             return random_link
 

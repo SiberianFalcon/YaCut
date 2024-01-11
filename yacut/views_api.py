@@ -1,9 +1,11 @@
+import re
+
 from flask import jsonify, request, url_for
 
 from . import app
 from .constants import (
-    MAX_CUSTOM_LINK_LENGTH, FORBIDDEN_EXPRESSIONS,
-    STATUS_CODE_OK, STATUS_CODE_CREATED, STATUS_CODE_NOT_FOUND
+    MAX_CUSTOM_LINK_LENGTH, STATUS_CODE_OK, STATUS_CODE_CREATED,
+    STATUS_CODE_NOT_FOUND, REGEX
 )
 from .error_handler import InvalidAPIUsage
 from .models import URLMap
@@ -36,7 +38,7 @@ def create_id():
             'Предложенный вариант короткой ссылки уже существует.')
 
     if (not data['custom_id'].isalnum()
-            or data['custom_id'] in FORBIDDEN_EXPRESSIONS
+            or not re.match(REGEX, data['custom_id'])
             or len(data['custom_id']) > MAX_CUSTOM_LINK_LENGTH):
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 

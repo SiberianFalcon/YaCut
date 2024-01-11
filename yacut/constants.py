@@ -1,5 +1,5 @@
-from random import choice
 from string import ascii_letters, digits
+import re
 
 
 #LENGTH
@@ -12,12 +12,12 @@ MAX_FORM_LENGTH_ID = 17
 MIN_FORM_LENGTH = 1
 
 #OTHER
-FORBIDDEN_EXPRESSIONS = ['.,/!?', 'Hodor-Hodor', 'h@k$r', '$', 'п', 'l l']
-CREATE_RANDOM_LINK = ''.join(
-    choice(ascii_letters + digits) for _ in range(LENGTH_LINK))
+CREATE_RANDOM_LINK = ascii_letters + digits
+REGEX = r'^[A-Za-z0-9]'
 
 #STATUS_CODE
 STATUS_CODE_OK = 200
 STATUS_CODE_CREATED = 201
 STATUS_CODE_BAD_REQUEST = 400
 STATUS_CODE_NOT_FOUND = 404
+STATUS_CODE_INTERNAL_ERROR = 500

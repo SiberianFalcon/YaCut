@@ -1,7 +1,8 @@
-from flask import jsonify
+from flask import jsonify, render_template
 
 from . import app, db
-from .constants import STATUS_CODE_BAD_REQUEST
+from .constants import (
+    STATUS_CODE_BAD_REQUEST, STATUS_CODE_NOT_FOUND, STATUS_CODE_INTERNAL_ERROR)
 
 
 class InvalidAPIUsage(Exception):
@@ -24,10 +25,10 @@ def invalid_api_usage(error):
 
 @app.errorhandler(404)
 def not_found(error):
-    return 404
+    return render_template('content.html'), STATUS_CODE_NOT_FOUND
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
     db.session.rollback()
-    return 500
+    return render_template('content.html'), STATUS_CODE_INTERNAL_ERROR
