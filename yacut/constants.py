@@ -1,6 +1,4 @@
 from string import ascii_letters, digits
-import re
-
 
 #LENGTH
 LENGTH_LINK = 6

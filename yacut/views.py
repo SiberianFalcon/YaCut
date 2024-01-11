@@ -4,7 +4,8 @@ from flask import render_template, redirect, flash, url_for
 
 from . import app, db
 from .constants import (
-    CREATE_RANDOM_LINK, STATUS_CODE_NOT_FOUND, LENGTH_LINK)
+    CREATE_RANDOM_LINK, STATUS_CODE_NOT_FOUND, LENGTH_LINK
+)
 from .error_handler import InvalidAPIUsage
 from .forms import URLForm
 from .models import URLMap
