@@ -25,10 +25,10 @@ def invalid_api_usage(error):
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('content.html'), STATUS_CODE_NOT_FOUND
+    return render_template('404.html'), STATUS_CODE_NOT_FOUND
 
 
 @app.errorhandler(500)
 def internal_server_error(error):
     db.session.rollback()
-    return render_template('content.html'), STATUS_CODE_INTERNAL_ERROR
+    return render_template('500.html'), STATUS_CODE_INTERNAL_ERROR

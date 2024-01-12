@@ -57,9 +57,8 @@ def get_unique_short_id():
     return render_template('content.html', form=form)
 
 
-@app.route('/<string:short_id>', methods=['GET'])
+@app.route('/<string:short_id>', strict_slashes=False)
 def redirect_func(short_id):
-    redirect_link = URLMap.query.filter_by(short=short_id).first()
-    if not redirect_link:
-        raise InvalidAPIUsage('Данный url не найден', STATUS_CODE_NOT_FOUND)
-    return redirect(redirect_link.original)
+    return redirect(
+        URLMap.query.filter_by(short=short_id).first_or_404().original,
+    )
