@@ -11,7 +11,7 @@ MIN_FORM_LENGTH = 1
 
 #OTHER
 CREATE_RANDOM_LINK = ascii_letters + digits
-REGEX = r'^[A-Za-z0-9]'
+REGEX = r'^[a-zA-Z0-9]+$'
 
 #STATUS_CODE
 STATUS_CODE_OK = 200

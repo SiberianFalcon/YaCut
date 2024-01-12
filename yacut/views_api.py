@@ -36,27 +36,24 @@ def create_id():
     if URLMap.query.filter_by(short=data['custom_id']).first():
         raise InvalidAPIUsage(
             'Предложенный вариант короткой ссылки уже существует.')
-
-    if (not data['custom_id'].isalnum()
-            or not re.match(REGEX, data['custom_id'])
+    if (not re.match(REGEX, data['custom_id'])
             or len(data['custom_id']) > MAX_CUSTOM_LINK_LENGTH):
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
     add_to_database(data['url'], data['custom_id'])
-    return (jsonify(
-        {
+    return (jsonify({
             'url': data['url'],
-            'short_link': f"http://localhost/{data['custom_id']}"}),
-            STATUS_CODE_CREATED
-            )
+            'short_link': url_for(
+                endpoint='get_unique_short_id',
+                _external=True,
+                _scheme='http') + data['custom_id']}),
+            STATUS_CODE_CREATED)
 
 
 @app.route('/api/id/<string:short_id>/', methods=['GET'])
 def get_url(short_id):
     short_link = URLMap.query.filter_by(short=short_id).first()
     if short_link is None:
-        return jsonify(
-            {'message': 'Указанный id не найден'}
-        ), STATUS_CODE_NOT_FOUND
+        raise InvalidAPIUsage('Указанный id не найден', STATUS_CODE_NOT_FOUND)
 
     return jsonify({'url': short_link.original}), STATUS_CODE_OK
