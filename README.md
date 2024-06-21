@@ -1,3 +1,5 @@
+![Static Badge](https://img.shields.io/badge/Python-gray) ![Static Badge](https://img.shields.io/badge/Django_Rest_Framework-red?style=flat)
+
 # УКРОТИТЕЛЬ ССЫЛОК - YaCut
 
 Привет! Данный проект является веб-приложением превращающий длинные и не красивые ссылки в короткие аккуратные и локаничные ссылочки! 
@@ -8,7 +10,3 @@
 * Далее создайте виртуальное окружение и скачайте зависимости командой ```pip install -r requirements.txt```
 * Создайте файл ```.env``` и заполните данные которые будут использоваться в файле ```settings.py``` для настройки проекта
 * Теперь можно запустить проект командой ```flask run``` и проверить его работоспособность
-
-### Проект создан в рамках учебного задания 
-### Список технологий в проекте:
-![Static Badge](https://img.shields.io/badge/Python-gray) ![Static Badge](https://img.shields.io/badge/Django_Rest_Framework-red?style=flat)
