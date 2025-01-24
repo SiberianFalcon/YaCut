@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/Python-gray) ![Static Badge](https://img.shields.io/badge/Django_Rest_Framework-red?style=flat)
+![Static Badge](https://img.shields.io/badge/Python-gray) ![Static Badge](https://img.shields.io/badge/Flask-red?style=flat)
 
 # УКРОТИТЕЛЬ ССЫЛОК
 
